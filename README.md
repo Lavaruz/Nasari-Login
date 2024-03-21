@@ -1,4 +1,5 @@
 # Bagaimana cara menjalankan program ??
+Video demo bisa dilihat pada file mp.4 diatas, dengan cara mendownloadnya
 
 ## Penting
 pastikan dalam komputer sudah terinstall Node JS & MySQL
