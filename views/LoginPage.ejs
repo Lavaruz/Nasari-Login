@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page Nasari</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="fixed top-0 bottom-0 right-0 left-0 z-0">
+        <video width="300" height="200" autoplay muted loop class="w-full">
+            <source src="/video/Background.mp4" type="video/mp4" />
+        </video>
+    </div>
+
+    <div class="fixed bg-black/60 top-0 bottom-0 right-0 left-0 z-10 flex items-center justify-center">
+        <div class="bg-[#dcd9da] px-20 py-8 rounded-lg">
+            <p class="text-2xl font-bold text-center mb-4">Silahkan Login</p>
+            <p id="error-message" class="text-center text-sm text-red-500 mb-2 hidden">Username Salah</p>
+            <form id="form-login" class="flex flex-col items-center gap-4">
+                <div class="flex items-center gap-4">
+                    <label for=""><i class="text-2xl uil uil-envelope-alt"></i></label>
+                    <input name="username" placeholder="Masukan Email" type="text" class="w-[400px] py-2.5 px-4 rounded-lg focus:outline-none">
+                </div>
+                <div class="flex items-center gap-4">
+                    <label for=""><i class="text-2xl uil uil-lock"></i></label>
+                    <input name="password" placeholder="Masukan Password" type="password" class="w-[400px] py-2.5 px-4 rounded-lg focus:outline-none">
+                </div>
+                <button id="button-login" disabled class="disabled:bg-blue-300 px-10 py-2.5 bg-blue-500 rounded-lg mt-4 text-white font-bold">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+<script>
+    function checkInputs() {
+        var username = $("input[name='username']").val();
+        var password = $("input[name='password']").val();
+
+        // If both username and password inputs are filled, enable login button
+        if (username && password) {
+            $("#button-login").prop("disabled", false);
+        } else {
+            $("#button-login").prop("disabled", true);
+        }
+    }
+
+    $("input[name='username'], input[name='password']").on("input", checkInputs);
+
+    $("#form-login").submit(function(e){
+        e.preventDefault()
+        let formData = new FormData($(this)[0])
+        $.ajax({
+            url: "/api/v1/auth/login",
+            method: "POST",
+            data: formData,
+            contentType: false,
+            encrypt: "multipart/form-data",
+            processData: false,
+            success: function(response){
+                if(response){
+                    window.location = "/welcome"
+                }
+            },
+            error: function(xhr){
+                let message = xhr.responseJSON.message
+                $("#error-message").text(message).removeClass("hidden")
+            }
+        })
+    })
+</script>
+
+</html>
